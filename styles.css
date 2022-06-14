@@ -1,0 +1,15 @@
+#display {
+    width: 640px;
+    height: 640px;
+}
+
+.pixel {
+    background-color: whitesmoke;
+    float:left;
+    width: 40px;
+    height: 40px;
+}
+
+#changed {
+    background-color: black;
+}
