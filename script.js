@@ -1,6 +1,7 @@
 const display = document.querySelector('#display');
 const btn = document.querySelector('#new');
-const colorBtn = document.querySelector('#color');
+const color_btn = document.querySelector('#color');
+const reset_btn = document.querySelector('#reset');
 
 function create_grid(n) {
     let nodes = document.querySelectorAll('.pixel');
@@ -18,23 +19,30 @@ function create_grid(n) {
         display.appendChild(pixel);
     }
     base_option();
+    default_colorBtn();
+}
+
+function black(event) {
+    event.target.style.backgroundColor = 'black';
 }
 
 function base_option() {
     const pixels = display.querySelectorAll('.pixel');
     pixels.forEach((pixel) => {
-        pixel.addEventListener('mouseover', () => {
-            pixel.style.backgroundColor = 'black';
-        });
+        pixel.removeEventListener('mouseover', color);
+        pixel.addEventListener('mouseover', black);
     });
+}
+
+function color(event) {
+    event.target.style.backgroundColor = `#${randomColor()}`;
 }
 
 function color_option() {
     const pixels = display.querySelectorAll('.pixel');
     pixels.forEach((pixel) => {
-        pixel.addEventListener('mouseover', () => {
-            pixel.style.backgroundColor = `#${randomColor()}`;
-        });
+        pixel.removeEventListener('mouseover', black);
+        pixel.addEventListener('mouseover', color);
     });
 }
 
@@ -45,22 +53,33 @@ btn.addEventListener('click', () => {
 
 let randomColor = () => Math.floor(Math.random()*16777215).toString(16);
 
-function default_color() {
-    colorBtn.addEventListener('click', () => {
-        color_option();
-        colorBtn.textContent = 'Back to black';
-        switch_back();
-    })  
+function toColor(event) {
+    color_option();
+    event.target.removeEventListener('click', toColor)
+    switch_back();
+}
+
+function default_colorBtn() {
+    color_btn.textContent = 'Random Color'
+    color_btn.addEventListener('click', toColor);  
+}
+
+function toBlack(event) {
+    base_option();
+    event.target.removeEventListener('click',toBlack);
+    default_colorBtn();
 }
 
 function switch_back() {
-    colorBtn.addEventListener('click', () => {
-        base_option();
-        colorBtn.textContent = 'Random colors';
-        default_color();
-    })
+    color_btn.textContent = 'Back to Black';
+    color_btn.addEventListener('click', toBlack);
 }
 
+reset_btn.addEventListener('click', () => {
+    let nodes = document.querySelectorAll('.pixel');
+    nodes.forEach((node) => {
+        node.style.backgroundColor = 'whitesmoke';
+    })
+})
 
 create_grid(16);
-default_color();
