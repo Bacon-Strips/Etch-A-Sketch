@@ -1,13 +1,12 @@
 #display {
     width: 640px;
     height: 640px;
+    margin: 50px;
 }
 
 .pixel {
     background-color: whitesmoke;
     float:left;
-    width: 40px;
-    height: 40px;
 }
 
 #changed {
