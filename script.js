@@ -1,5 +1,6 @@
 const display = document.querySelector('#display');
 const btn = document.querySelector('#new');
+const colorBtn = document.querySelector('#color');
 
 function create_grid(n) {
     let nodes = document.querySelectorAll('.pixel');
@@ -19,20 +20,47 @@ function create_grid(n) {
     base_option();
 }
 
+function base_option() {
+    const pixels = display.querySelectorAll('.pixel');
+    pixels.forEach((pixel) => {
+        pixel.addEventListener('mouseover', () => {
+            pixel.style.backgroundColor = 'black';
+        });
+    });
+}
+
+function color_option() {
+    const pixels = display.querySelectorAll('.pixel');
+    pixels.forEach((pixel) => {
+        pixel.addEventListener('mouseover', () => {
+            pixel.style.backgroundColor = `#${randomColor()}`;
+        });
+    });
+}
 
 btn.addEventListener('click', () => {
     let val = prompt('Select grid size', '16');
     create_grid(parseInt(val));
 })
 
-function base_option() {
-    const pixels = display.querySelectorAll('.pixel');
-    pixels.forEach((pixel) => {
-        pixel.addEventListener('mouseover', () => {
-            pixel.setAttribute('id', 'changed');
-        });
-    });
+let randomColor = () => Math.floor(Math.random()*16777215).toString(16);
+
+function default_color() {
+    colorBtn.addEventListener('click', () => {
+        color_option();
+        colorBtn.textContent = 'Back to black';
+        switch_back();
+    })  
 }
 
+function switch_back() {
+    colorBtn.addEventListener('click', () => {
+        base_option();
+        colorBtn.textContent = 'Random colors';
+        default_color();
+    })
+}
+
+
 create_grid(16);
-base_option();
+default_color();
